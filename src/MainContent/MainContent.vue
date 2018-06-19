@@ -3,7 +3,6 @@
           :src="target_url">
 
   </iframe>
-  <!-- <div></div> -->
 </template>
 
 <script>
@@ -15,17 +14,14 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
+    $route() {
       if (this.$route.params.id) {
-        console.log("watch :)", atob(this.$route.params.id));
-        console.log(to, from);
         this.target_url = atob(this.$route.params.id);
       }
     }
   },
   mounted() {
     if (this.$route.params.id) {
-      console.log("monted :)", this.$route.params.id);
       this.target_url = atob(this.$route.params.id);
     }
   }

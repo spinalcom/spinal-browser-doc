@@ -10,11 +10,16 @@
         </p>
       </div>
       <div class="md-toolbar-section-end color_black">
-        <h3>Category Content</h3>
+        <h3>Content</h3>
         <md-button class="md-icon-button"
                    @click="editContent = !editContent">
           <md-tooltip>Add Child</md-tooltip>
           <md-icon>edit</md-icon>
+        </md-button>
+        <md-button v-if="selected.target_url && selected.target_url.length > 0"
+                   class="md-icon-button "
+                   :to="btoa(selected.target_url)">
+          <md-icon>open_in_new</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -23,7 +28,13 @@
       <md-content md-elevation="1"
                   class="category-content-edit"
                   v-if="editContent">
-        <md-card-content>
+        <md-card-content v-if="!selected.type">
+          <md-empty-state md-icon="cancel"
+                          md-label="Nothing Selected">
+          </md-empty-state>
+        </md-card-content>
+
+        <md-card-content v-else>
           <md-field>
             <label for="type">Type</label>
             <md-select v-model="selectedType">
@@ -41,11 +52,6 @@
           <md-field>
             <label>Target Url</label>
             <md-input v-model="selectedTarget_url"></md-input>
-            <md-button v-if="selected.target_url && selected.target_url.length > 0"
-                       class="md-icon-button "
-                       :to="btoa(selected.target_url)">
-              <md-icon>open_in_new</md-icon>
-            </md-button>
           </md-field>
         </md-card-content>
       </md-content>
@@ -147,7 +153,6 @@ export default {
   background-color: brown;
 }
 .category-content-edit {
-  height: 200px;
   padding-bottom: 5px;
   padding-top: 5px;
 }

@@ -52,6 +52,10 @@
             <md-icon>open_in_new</md-icon>
           </md-button>
           <md-button class="md-icon-button "
+                     @click="deleteItem(item, id)">
+            <md-icon>delete_forever</md-icon>
+          </md-button>
+          <md-button class="md-icon-button "
                      @click="openEditChild(item)">
             <md-icon>edit</md-icon>
           </md-button>
@@ -81,6 +85,12 @@ export default {
   },
 
   methods: {
+    deleteItem: function(item, id) {
+      if (confirm("confim delete !") == true) {
+        this.selected.children.splice(id, 1);
+        EventBus.$emit("update-children");
+      }
+    },
     btoa: function(str) {
       return btoa(str);
     },

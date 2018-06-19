@@ -70,6 +70,10 @@
             <md-icon>open_in_new</md-icon>
           </md-button>
           <md-button class="md-icon-button "
+                     @click="deleteItem(item, id)">
+            <md-icon>delete_forever</md-icon>
+          </md-button>
+          <md-button class="md-icon-button "
                      @click="selectItem(item)">
             <md-icon>keyboard_arrow_right</md-icon>
           </md-button>
@@ -94,14 +98,19 @@ export default {
       selected: {}
     };
   },
-  // watch: {
-  //   list: function() {
-  //     this.current_list = Array.from(this.list);
-  //   }
-  // },
   methods: {
     btoa: function(str) {
       return btoa(str);
+    },
+    deleteItem: function(item, id) {
+      if (confirm("confim delete !") == true) {
+        this.current_list.splice(id, 1);
+        if (this.selected == item) {
+          this.selected = {};
+        }
+        EventBus.$emit("admin-select-item", this.selected);
+        EventBus.$emit("update-list");
+      }
     },
     selectItem: function(item) {
       EventBus.$emit("admin-select-item", item);

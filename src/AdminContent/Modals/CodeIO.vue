@@ -4,7 +4,19 @@
              :md-fullscreen=true>
     <md-dialog-title>Code IO</md-dialog-title>
     <md-dialog-content>
-      <VlCode v-model="str_code" />
+      <!-- <MonacoEditor style="height: calc(80vh - 150px)"
+                    language="json"
+                    :code="str_code"
+                    option="option"
+                    @codeChange="onCodeChange">
+      </MonacoEditor>
+ -->
+      <MonacoEditor class="editor"
+                    v-model="str_code"
+                    language="json">
+      </MonacoEditor>
+
+      <!-- <VlCode v-model="str_code" /> -->
     </md-dialog-content>
     <md-dialog-actions>
       <md-button class="md-raised md-accent"
@@ -23,17 +35,29 @@
 </template>
 
 <script>
-import VlCode from "./CodeMirror.vue";
+// import VlCode from "./CodeMirror.vue";
 import { EventBus } from "../../event-bus";
 const debounce = require("lodash.debounce");
+// import MonacoEditor from "vue-monaco-editor";
+import MonacoEditor from "./CodeMonaco.js";
 
 export default {
   name: "CodeIO",
-  components: { VlCode },
+  // components: { MonacoEditor },
+  components: { MonacoEditor },
+  // components: { VlCode },
   props: ["openCodeIO", "list"],
   data() {
     return {
       str_code: ""
+      // option: {
+      //   selectOnLineNumbers: true,
+      //   roundedSelection: false,
+      //   readOnly: false,
+      //   cursorStyle: "line",
+      //   automaticLayout: true,
+      //   glyphMargin: true
+      // }
     };
   },
   // watch: {
@@ -53,6 +77,9 @@ export default {
     }
   },
   methods: {
+    onCodeChange: function(editor) {
+      console.log(editor.getValue());
+    },
     onCancel: function() {
       this.$emit("closeModal");
     },
@@ -61,7 +88,21 @@ export default {
         let obj = JSON.parse(this.str_code);
         this.$emit("updateList", obj);
       } catch (error) {
-        console.error(error);
+        let modelMarkers = window.monaco.editor
+          .getModelMarkers({})
+          .map(
+            m => `Error: (${m.startLineNumber},${m.startColumn}) ${m.message}`
+          )
+          .join("\n");
+        console.log(modelMarkers);
+
+        // console.error(error);
+        // console.log(
+
+        //
+        //
+        // );
+        alert(modelMarkers);
       }
     }
   },
@@ -81,5 +122,8 @@ export default {
 .md-dialog {
   min-width: 80vw;
   min-height: 80vh;
+}
+.editor {
+  height: calc(80vh - 150px);
 }
 </style>
