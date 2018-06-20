@@ -55,7 +55,7 @@ export default {
   padding: 0;
 }
 .left-selected {
-  background-color: brown;
+  background-color: #4d7db3;
   text-decoration: none !important;
 }
 .left-selected > a > div {
