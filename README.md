@@ -2,4 +2,4 @@
 
 ## Setup
 
-open the admin route http://localhost:7777/html/doc/admin
+open the admin route http://sc2.spinalcom.com/html/doc/#/admin
